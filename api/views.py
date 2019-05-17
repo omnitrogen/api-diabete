@@ -178,3 +178,25 @@ def get_user_info(request, id_user):
             "height": user.height,
         }
     )
+
+
+@csrf_exempt
+def get_all_users(request):
+    users = User.objects.all()
+    userList = []
+    for elt in users:
+        userList.append(
+            {
+                "email": elt.email,
+                "password": elt.password,
+                "firstName": elt.firstName,
+                "lastName": elt.lastName,
+                "userType": elt.userType,
+                "birthDate": elt.birthDate,
+                "gender": elt.gender,
+                "weight": elt.weight,
+                "height": elt.height,
+            }
+        )
+
+    return JsonResponse({"users": userList})

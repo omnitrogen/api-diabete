@@ -9,4 +9,5 @@ urlpatterns = [
     path("get_product_value/<int:id_product>", views.get_product_value),
     path("get_food_idea/", views.get_food_idea),
     path("get_user_info/<int:id_user>", views.get_user_info),
+    path("get_all_users/", views.get_all_users),
 ]
