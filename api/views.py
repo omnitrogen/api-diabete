@@ -84,6 +84,7 @@ def create_user(request):
                 "height": answer["height"],
             }
         )
+    return JsonResponse({"error": "not a POST"})
 
 
 @csrf_exempt
