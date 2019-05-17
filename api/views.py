@@ -146,7 +146,7 @@ def add_doctor_measures(request):
         answer = json.loads(request.body)
         exam_type = ExamType(exam_type=answer["examType"])
         exam_type.save()
-        for elt in 
+        # for elt in
         measures = Measures(value=answer["value"], exam_type=exam_type)
         measures.save()
         user = User.objects.get(pk=answer["userId"])
