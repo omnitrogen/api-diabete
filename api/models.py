@@ -6,10 +6,10 @@ from django.utils import timezone
 class User(models.Model):
     email = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    user_type = models.CharField(max_length=20)
-    age = models.IntegerField()
+    firstName = models.CharField(max_length=100)
+    lastName = models.CharField(max_length=100)
+    userType = models.CharField(max_length=20)
+    birthDate = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
     weight = models.IntegerField()
     height = models.IntegerField()
@@ -21,19 +21,19 @@ class PatientMeasures(models.Model):
     ldl = models.FloatField(blank=True)
     hdl = models.FloatField(blank=True)
     trygliceride = models.FloatField(blank=True)
-    blood_pressure = models.FloatField(blank=True)
+    bloodPressure = models.FloatField(blank=True)
     weight = models.IntegerField(blank=True)
     heartbeat = models.IntegerField(blank=True)
     timestamp = models.CharField(max_length=100)
 
 
 class ExamType(models.Model):
-    exam_type = models.CharField(max_length=250)
+    examType = models.CharField(max_length=250)
 
 
 class Measures(models.Model):
     value = models.FloatField()
-    exam_type = models.ForeignKey(ExamType, on_delete=models.CASCADE)
+    examType = models.ForeignKey(ExamType, on_delete=models.CASCADE)
 
 
 class ExamReport(models.Model):

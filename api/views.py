@@ -59,16 +59,15 @@ def create_user(request):
         user = User(
             email=answer["email"],
             password=answer["password"],
-            first_name=answer["first_name"],
-            last_name=answer["last_name"],
-            user_type=answer["user_type"],
-            age=answer["age"],
+            firstName=answer["firstName"],
+            lastName=answer["lastName"],
+            userType=answer["userType"],
             gender=answer["gender"],
             weight=answer["weight"],
             height=answer["height"],
         )
         user.save()
-        return JsonResponse({"user_id": user.id})
+        return JsonResponse({"userId": user.id})
 
 
 @csrf_exempt
@@ -77,41 +76,54 @@ def log_in(request):
         answer = json.loads(request.body)
         if User.objects.filter(email=answer["email"], password=answer["password"]):
             user = User.objects.get(email=answer["email"], password=answer["password"])
-            return JsonResponse({"user_id": user.id})
+            return JsonResponse({"userId": user.id})
         return JsonResponse({"error": "Username or password is wrong"})
 
 
 @csrf_exempt
 def add_patient_measures(request):
     if request.method == "POST":
-        answer = json.loads(request.body)
-        user = User.objects.get(pk=answer["user_id"])
+        a = json.loads(request.body)
+        user = User.objects.get(pk=a["userId"])
+        answer = {
+            "glycemia": "",
+            "ldl": "",
+            "hdl": "",
+            "trygliceride": "",
+            "bloodPressure": "",
+            "eight": "",
+            "heartbeat": "",
+            "timestamp": "",
+        }
+        answer.update(a)
         measure = PatientMeasures(
             user=user,
             glycemia=answer["glycemia"],
             ldl=answer["ldl"],
             hdl=answer["hdl"],
             trygliceride=answer["trygliceride"],
-            blood_pressure=answer["blood_pressure"],
+            blood_pressure=answer["bloodPressure"],
             weight=answer["weight"],
             heartbeat=answer["heartbeat"],
             timestamp=answer["timestamp"],
         )
         measure.save()
-        return JsonResponse({"measure_id": measure.id, "user_id": user.id})
+        return JsonResponse({"measureId": measure.id, "userId": user.id})
 
 
 @csrf_exempt
 def add_doctor_measures(request):
     if request.method == "POST":
-        answer = json.loads(request.body)
-        exam_type = ExamType(exam_type=answer["exam_type"])
+        a = json.loads(request.body)
+        answer = {"examType": "", "value": "", "userId": "", "timestamp": ""}
+        answer.update(a)
+        exam_type = ExamType(exam_type=answer["examType"])
         exam_type.save()
         measures = Measures(value=answer["value"], exam_type=exam_type)
         measures.save()
-        user = User.objects.get(pk=answer["user_id"])
+        user = User.objects.get(pk=answer["userId"])
         exam_report = ExamReport(
             user=user, timestamp=answer["timestamp"], measures=measures
         )
         exam_report.save()
-        return JsonResponse({"exam_report_id": exam_report.id, "user_id": user.id})
+        return JsonResponse({"examReportId": exam_report.id, "userId": user.id})
