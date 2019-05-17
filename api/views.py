@@ -62,12 +62,26 @@ def create_user(request):
             firstName=answer["firstName"],
             lastName=answer["lastName"],
             userType=answer["userType"],
+            birthDate=answer["birthDate"],
             gender=answer["gender"],
             weight=answer["weight"],
             height=answer["height"],
         )
         user.save()
-        return JsonResponse({"userId": user.id})
+        return JsonResponse(
+            {
+                "userId": user.id,
+                "email": answer["email"],
+                "password": answer["password"],
+                "firstName": answer["firstName"],
+                "lastName": answer["lastName"],
+                "userType": answer["userType"],
+                "birthDate": answer["birthDate"],
+                "gender": answer["gender"],
+                "weight": answer["weight"],
+                "height": answer["height"],
+            }
+        )
 
 
 @csrf_exempt
@@ -76,7 +90,20 @@ def log_in(request):
         answer = json.loads(request.body)
         if User.objects.filter(email=answer["email"], password=answer["password"]):
             user = User.objects.get(email=answer["email"], password=answer["password"])
-            return JsonResponse({"userId": user.id})
+            return JsonResponse(
+                {
+                    "userId": user.id,
+                    "email": answer["email"],
+                    "password": answer["password"],
+                    "firstName": answer["firstName"],
+                    "lastName": answer["lastName"],
+                    "userType": answer["userType"],
+                    "birthDate": answer["birthDate"],
+                    "gender": answer["gender"],
+                    "weight": answer["weight"],
+                    "height": answer["height"],
+                }
+            )
         return JsonResponse({"error": "Username or password is wrong"})
 
 
