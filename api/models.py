@@ -33,10 +33,11 @@ class ExamType(models.Model):
 
 class Measures(models.Model):
     value = models.FloatField()
+    measuredQuantity = models.CharField(max_length=100)
     examType = models.ForeignKey(ExamType, on_delete=models.CASCADE)
 
 
 class ExamReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.CharField(max_length=100)
-    measures = models.ForeignKey(Measures, on_delete=models.CASCADE)
+    measures = models.ManyToManyField(Measures)

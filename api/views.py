@@ -144,15 +144,20 @@ def add_patient_measures(request):
 def add_doctor_measures(request):
     if request.method == "POST":
         answer = json.loads(request.body)
-        exam_type = ExamType(exam_type=answer["examType"])
+        exam_type = ExamType(examType=answer["examType"])
         exam_type.save()
-        # for elt in
-        measures = Measures(value=answer["value"], exam_type=exam_type)
-        measures.save()
         user = User.objects.get(pk=answer["userId"])
-        exam_report = ExamReport(
-            user=user, timestamp=answer["timestamp"], measures=measures
-        )
+        exam_report = ExamReport(user=user, timestamp=answer["timestamp"])
+        exam_report.save()
+        for elt in answer["measurements"]:
+            measures = Measures(
+                measuredQuantity=elt["measuredQuantity"],
+                value=elt["value"],
+                examType=exam_type,
+            )
+            measures.save()
+            exam_report.measures.add(measures)
+
         exam_report.save()
         return JsonResponse({"examReportId": exam_report.id, "userId": user.id})
 
