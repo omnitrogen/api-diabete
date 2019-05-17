@@ -56,6 +56,8 @@ def get_food_idea(request):
 def create_user(request):
     if request.method == "POST":
         answer = json.loads(request.body)
+        if User.objects.filter(email=answer["email"]):
+            return JsonResponse({"error": "email already in use"})
         user = User(
             email=answer["email"],
             password=answer["password"],
@@ -154,3 +156,21 @@ def add_doctor_measures(request):
         )
         exam_report.save()
         return JsonResponse({"examReportId": exam_report.id, "userId": user.id})
+
+
+@csrf_exempt
+def get_user_info(request, id_user):
+    user = User.objects.get(pk=id_user)
+    return JsonResponse(
+        {
+            "email": user.email,
+            "password": user.password,
+            "firstName": user.firstName,
+            "lastName": user.lastName,
+            "userType": user.userType,
+            "birthDate": user.birthDate,
+            "gender": user.gender,
+            "weight": user.weight,
+            "height": user.height,
+        }
+    )
