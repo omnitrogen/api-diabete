@@ -95,15 +95,15 @@ def log_in(request):
             return JsonResponse(
                 {
                     "userId": user.id,
-                    "email": answer["email"],
-                    "password": answer["password"],
-                    "firstName": answer["firstName"],
-                    "lastName": answer["lastName"],
-                    "userType": answer["userType"],
-                    "birthDate": answer["birthDate"],
-                    "gender": answer["gender"],
-                    "weight": answer["weight"],
-                    "height": answer["height"],
+                    "email": user.email,
+                    "password": user.password,
+                    "firstName": user.firstName,
+                    "lastName": user.lastName,
+                    "userType": user.userType,
+                    "birthDate": user.birthDate,
+                    "gender": user.gender,
+                    "weight": user.weight,
+                    "height": user.height,
                 }
             )
         return JsonResponse({"error": "Username or password is wrong"})
@@ -143,11 +143,10 @@ def add_patient_measures(request):
 @csrf_exempt
 def add_doctor_measures(request):
     if request.method == "POST":
-        a = json.loads(request.body)
-        answer = {"examType": "", "value": "", "userId": "", "timestamp": ""}
-        answer.update(a)
+        answer = json.loads(request.body)
         exam_type = ExamType(exam_type=answer["examType"])
         exam_type.save()
+        for elt in 
         measures = Measures(value=answer["value"], exam_type=exam_type)
         measures.save()
         user = User.objects.get(pk=answer["userId"])
