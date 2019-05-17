@@ -1,4 +1,4 @@
-#!/home/omni/repos/diabete/django-env/bin/python
+#!/home/omni/repos/api-diabete/django-env/bin/python
 
 import sys
 import getopt

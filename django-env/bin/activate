@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/omni/repos/diabete/django-env"
+VIRTUAL_ENV="/home/omni/repos/api-diabete/django-env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

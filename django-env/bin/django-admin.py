@@ -1,4 +1,4 @@
-#!/home/omni/repos/diabete/django-env/bin/python3
+#!/home/omni/repos/api-diabete/django-env/bin/python3
 from django.core import management
 
 if __name__ == "__main__":

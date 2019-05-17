@@ -1,4 +1,4 @@
-#!/home/omni/repos/diabete/django-env/bin/python3
+#!/home/omni/repos/api-diabete/django-env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
