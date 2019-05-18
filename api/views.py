@@ -116,13 +116,13 @@ def add_patient_measures(request):
         a = json.loads(request.body)
         user = User.objects.get(pk=a["userId"])
         answer = {
-            "glycemia": "",
-            "ldl": "",
-            "hdl": "",
-            "trygliceride": "",
-            "bloodPressure": "",
-            "weight": "",
-            "heartbeat": "",
+            "glycemia": 0.0,
+            "ldl": 0.0,
+            "hdl": 0.0,
+            "trygliceride": 0.0,
+            "bloodPressure": 0.0,
+            "weight": 0.0,
+            "heartbeat": 0.0,
             "timestamp": "",
         }
         answer.update(a)
@@ -132,7 +132,7 @@ def add_patient_measures(request):
             ldl=answer["ldl"],
             hdl=answer["hdl"],
             trygliceride=answer["trygliceride"],
-            blood_pressure=answer["bloodPressure"],
+            bloodPressure=answer["bloodPressure"],
             weight=answer["weight"],
             heartbeat=answer["heartbeat"],
             timestamp=answer["timestamp"],
