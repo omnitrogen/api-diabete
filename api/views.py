@@ -105,7 +105,7 @@ def create_user(request):
 @csrf_exempt
 def log_in(request):
     if request.method == "POST":
-        answer = json.loads(request.body)
+        answer = json.loads(request.body.decode("utf-8"))
         if User.objects.filter(email=answer["email"], password=answer["password"]):
             user = User.objects.get(email=answer["email"], password=answer["password"])
             return JsonResponse(
@@ -129,7 +129,7 @@ def log_in(request):
 @csrf_exempt
 def add_patient_measures(request):
     if request.method == "POST":
-        a = json.loads(request.body)
+        a = json.loads(request.body.decode("utf-8"))
         user = User.objects.get(pk=a["userId"])
         answer = {
             "glycemia": None,
@@ -162,7 +162,7 @@ def add_patient_measures(request):
 @csrf_exempt
 def add_doctor_measures(request):
     if request.method == "POST":
-        answer = json.loads(request.body)
+        answer = json.loads(request.body.decode("utf-8"))
         exam_type = ExamType(examType=answer["examType"])
         exam_type.save()
         user = User.objects.get(pk=answer["userId"])
