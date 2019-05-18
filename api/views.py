@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import JsonResponse
 from django.core import serializers
 
@@ -19,6 +19,10 @@ import requests
 import random
 
 from pprint import pprint
+
+
+def graph(request, graph_id):
+    return render_to_response("Sample" + str(graph_id) + ".html")
 
 
 @csrf_exempt
@@ -66,17 +70,17 @@ def create_user(request):
         answer = json.loads(request.body)
         if User.objects.filter(email=answer["email"]):
             return JsonResponse({"error": "email already in use"})
-        user = User(
-            email=answer["email"],
-            password=answer["password"],
-            firstName=answer["firstName"],
-            lastName=answer["lastName"],
-            userType=answer["userType"],
-            birthDate=answer["birthDate"],
-            gender=answer["gender"],
-            weight=answer["weight"],
-            height=answer["height"],
-        )
+            user = User(
+                email=answer["email"],
+                password=answer["password"],
+                firstName=answer["firstName"],
+                lastName=answer["lastName"],
+                userType=answer["userType"],
+                birthDate=answer["birthDate"],
+                gender=answer["gender"],
+                weight=answer["weight"],
+                height=answer["height"],
+            )
         user.save()
         return JsonResponse(
             {
@@ -201,8 +205,14 @@ def get_user_info(request, id_user):
 
 @csrf_exempt
 def get_user_measures(request, id_user):
-    measures = serializers.serialize("json", PatientMeasures.objects.get(pk=id_user))
-    return JsonResponse(measures)
+    if PatientMeasures.objects.filter(user__id=id_user):
+        # measures = list(PatientMeasures.objects.filter(user__id=id_user).values())
+        # return JsonResponse({"measures": measures})
+        measures = serializers.serialize(
+            "json", PatientMeasures.objects.filter(user__id=id_user).values()
+        )
+        return JsonResponse()
+    return JsonResponse({"error": "patient do not have measures"})
 
 
 @csrf_exempt

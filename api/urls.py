@@ -13,4 +13,5 @@ urlpatterns = [
     path("get_doctor_measures/<int:id_user>", views.get_doctor_measures),
     path("get_exam_types/", views.get_exam_types),
     path("get_all_users/", views.get_all_users),
+    path("static/graph/<int:graph_id>", views.graph),
 ]
