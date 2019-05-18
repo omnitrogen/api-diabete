@@ -188,6 +188,7 @@ def get_all_users(request):
     for elt in users:
         userList.append(
             {
+                "userId": elt.id,
                 "email": elt.email,
                 "password": elt.password,
                 "firstName": elt.firstName,
