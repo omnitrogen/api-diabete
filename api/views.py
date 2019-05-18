@@ -121,7 +121,7 @@ def add_patient_measures(request):
             "hdl": "",
             "trygliceride": "",
             "bloodPressure": "",
-            "eight": "",
+            "weight": "",
             "heartbeat": "",
             "timestamp": "",
         }
