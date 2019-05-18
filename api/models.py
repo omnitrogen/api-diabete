@@ -13,6 +13,7 @@ class User(models.Model):
     gender = models.CharField(max_length=20)
     weight = models.IntegerField()
     height = models.IntegerField()
+    xp = models.IntegerField(blank=True, default=0)
 
 
 class PatientMeasures(models.Model):
@@ -41,3 +42,9 @@ class ExamReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.CharField(max_length=100)
     measures = models.ManyToManyField(Measures)
+
+
+class DiseaseRisk(models.Model):
+    diseaseName = models.CharField(max_length=100)
+    value = models.FloatField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

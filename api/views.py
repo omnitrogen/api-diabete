@@ -1,8 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.core import serializers
 
-from api.models import User, PatientMeasures, ExamType, Measures, ExamReport
+from api.models import (
+    User,
+    PatientMeasures,
+    ExamType,
+    Measures,
+    ExamReport,
+    DiseaseRisk,
+)
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -105,6 +113,7 @@ def log_in(request):
                     "gender": user.gender,
                     "weight": user.weight,
                     "height": user.height,
+                    "xp": user.xp,
                 }
             )
         return JsonResponse({"error": "Username or password is wrong"})
@@ -138,6 +147,8 @@ def add_patient_measures(request):
             timestamp=answer["timestamp"],
         )
         measure.save()
+        user.xp += 1
+        user.save()
         return JsonResponse({"measureId": measure.id, "userId": user.id})
 
 
@@ -168,6 +179,9 @@ def add_doctor_measures(request):
 @csrf_exempt
 def get_user_info(request, id_user):
     user = User.objects.get(pk=id_user)
+    diseases = serializers.serialize(
+        "json", DiseaseRisk.objects.filter(user__id=user.id)
+    )
     return JsonResponse(
         {
             "email": user.email,
@@ -179,8 +193,28 @@ def get_user_info(request, id_user):
             "gender": user.gender,
             "weight": user.weight,
             "height": user.height,
+            "xp": user.xp,
+            "diseases": diseases,
         }
     )
+
+
+@csrf_exempt
+def get_user_measures(request, id_user):
+    measures = serializers.serialize("json", PatientMeasures.objects.get(pk=id_user))
+    return JsonResponse(measures)
+
+
+@csrf_exempt
+def get_doctor_measures(request, id_user):
+    measures = serializers.serialize("json", ExamReport.objects.get(pk=id_user))
+    return JsonResponse(measures)
+
+
+@csrf_exempt
+def get_exam_types(request):
+    examTypes = list(ExamType.objects.values("examType"))
+    return JsonResponse({"examTypes": examTypes})
 
 
 @csrf_exempt
@@ -200,6 +234,7 @@ def get_all_users(request):
                 "gender": elt.gender,
                 "weight": elt.weight,
                 "height": elt.height,
+                "xp": elt.xp,
             }
         )
 
