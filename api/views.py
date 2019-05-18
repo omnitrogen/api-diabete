@@ -191,6 +191,7 @@ def get_user_info(request, id_user):
     )
     return JsonResponse(
         {
+            "userId": user.id,
             "email": user.email,
             "password": user.password,
             "firstName": user.firstName,
