@@ -217,9 +217,13 @@ def get_user_measures(request, id_user):
 
 @csrf_exempt
 def get_doctor_measures(request, id_user):
-    if ExamReport.objects.filter(user__id=1)[0]:
-        exam_report = serializers.serialize("json", ExamReport.objects.get(pk=id_user))
-        return JsonResponse(measures)
+    answerDic = {}
+    if ExamReport.objects.filter(user__id=id_user):
+        for elt in ExamReport.objects.filter(user__id=id_user):
+            exam_report = serializers.serialize(
+                "json", ExamReport.objects.get(pk=id_user)
+            )
+            return JsonResponse(measures)
     return JsonResponse({"error": "patient do not have measures"})
 
 
