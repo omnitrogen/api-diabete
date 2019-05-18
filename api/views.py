@@ -73,17 +73,17 @@ def create_user(request):
         answer = json.loads(request.body)
         if User.objects.filter(email=answer["email"]):
             return JsonResponse({"error": "email already in use"})
-            user = User(
-                email=answer["email"],
-                password=answer["password"],
-                firstName=answer["firstName"],
-                lastName=answer["lastName"],
-                userType=answer["userType"],
-                birthDate=answer["birthDate"],
-                gender=answer["gender"],
-                weight=answer["weight"],
-                height=answer["height"],
-            )
+        user = User(
+            email=answer["email"],
+            password=answer["password"],
+            firstName=answer["firstName"],
+            lastName=answer["lastName"],
+            userType=answer["userType"],
+            birthDate=answer["birthDate"],
+            gender=answer["gender"],
+            weight=answer["weight"],
+            height=answer["height"],
+        )
         user.save()
         return JsonResponse(
             {
