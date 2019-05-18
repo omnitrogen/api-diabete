@@ -209,19 +209,17 @@ def get_user_info(request, id_user):
 @csrf_exempt
 def get_user_measures(request, id_user):
     if PatientMeasures.objects.filter(user__id=id_user):
-        # measures = list(PatientMeasures.objects.filter(user__id=id_user).values())
-        # return JsonResponse({"measures": measures})
-        measures = serializers.serialize(
-            "json", PatientMeasures.objects.filter(user__id=id_user).values()
-        )
-        return JsonResponse()
+        measures = list(PatientMeasures.objects.filter(user__id=id_user).values())[0]
+        return JsonResponse({"measures": measures})
     return JsonResponse({"error": "patient do not have measures"})
 
 
 @csrf_exempt
 def get_doctor_measures(request, id_user):
-    measures = serializers.serialize("json", ExamReport.objects.get(pk=id_user))
-    return JsonResponse(measures)
+    if ExamReport.objects.filter(user__id=1)[0]:
+        exam_report = serializers.serialize("json", ExamReport.objects.get(pk=id_user))
+        return JsonResponse(measures)
+    return JsonResponse({"error": "patient do not have measures"})
 
 
 @csrf_exempt
