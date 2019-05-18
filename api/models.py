@@ -17,13 +17,13 @@ class User(models.Model):
 
 class PatientMeasures(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    glycemia = models.FloatField(blank=True)
-    ldl = models.FloatField(blank=True)
-    hdl = models.FloatField(blank=True)
-    trygliceride = models.FloatField(blank=True)
-    bloodPressure = models.FloatField(blank=True)
-    weight = models.IntegerField(blank=True)
-    heartbeat = models.IntegerField(blank=True)
+    glycemia = models.FloatField(blank=True, default=None, null=True)
+    ldl = models.FloatField(blank=True, default=None, null=True)
+    hdl = models.FloatField(blank=True, default=None, null=True)
+    trygliceride = models.FloatField(blank=True, default=None, null=True)
+    bloodPressure = models.FloatField(blank=True, default=None, null=True)
+    weight = models.IntegerField(blank=True, default=None, null=True)
+    heartbeat = models.IntegerField(blank=True, default=None, null=True)
     timestamp = models.CharField(max_length=100)
 
 
@@ -32,7 +32,7 @@ class ExamType(models.Model):
 
 
 class Measures(models.Model):
-    value = models.FloatField()
+    value = models.FloatField(blank=True, default=None, null=True)
     measuredQuantity = models.CharField(max_length=100)
     examType = models.ForeignKey(ExamType, on_delete=models.CASCADE)
 

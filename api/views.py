@@ -116,13 +116,13 @@ def add_patient_measures(request):
         a = json.loads(request.body)
         user = User.objects.get(pk=a["userId"])
         answer = {
-            "glycemia": 0.0,
-            "ldl": 0.0,
-            "hdl": 0.0,
-            "trygliceride": 0.0,
-            "bloodPressure": 0.0,
-            "weight": 0.0,
-            "heartbeat": 0.0,
+            "glycemia": None,
+            "ldl": None,
+            "hdl": None,
+            "trygliceride": None,
+            "bloodPressure": None,
+            "weight": None,
+            "heartbeat": None,
             "timestamp": "",
         }
         answer.update(a)
@@ -151,9 +151,11 @@ def add_doctor_measures(request):
         exam_report = ExamReport(user=user, timestamp=answer["timestamp"])
         exam_report.save()
         for elt in answer["measurements"]:
+            dicValue = {"value": None}
+            dicValue.update(elt)
             measures = Measures(
                 measuredQuantity=elt["measuredQuantity"],
-                value=elt["value"],
+                value=dicValue["value"],
                 examType=exam_type,
             )
             measures.save()
