@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, render_to_response
 from django.http import JsonResponse
 from django.core import serializers
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 from api.models import (
     User,
@@ -21,6 +23,7 @@ import random
 from pprint import pprint
 
 
+@xframe_options_exempt
 def graph(request, graph_id):
     return render_to_response("Sample" + str(graph_id) + ".html")
 
