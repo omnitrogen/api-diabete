@@ -209,9 +209,11 @@ def get_user_info(request, id_user):
 
 @csrf_exempt
 def get_user_measures(request, id_user):
+    measuresList = []
     if PatientMeasures.objects.filter(user__id=id_user):
-        measures = list(PatientMeasures.objects.filter(user__id=id_user).values())[0]
-        return JsonResponse({"measures": measures})
+        for elt in PatientMeasures.objects.filter(user__id=id_user).values():
+            measuresList.append(elt)
+        return JsonResponse({"measures": measuresList})
     return JsonResponse({"error": "patient do not have measures"})
 
 
