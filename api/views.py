@@ -221,11 +221,24 @@ def get_user_measures(request, id_user):
 def get_doctor_measures(request, id_user):
     answerDic = {}
     if ExamReport.objects.filter(user__id=id_user):
-        for elt in ExamReport.objects.filter(user__id=id_user):
-            exam_report = serializers.serialize(
-                "json", ExamReport.objects.get(pk=id_user)
+        for elt in ExamReport.objects.values("measures__examType__examType"):
+            answerDic[str(elt["measures__examType__examType"])] = []
+        for elt in ExamReport.objects.values(
+            "pk",
+            "timestamp",
+            "measures__value",
+            "measures__measuredQuantity",
+            "measures__examType__examType",
+        ):
+            answerDic[str(elt["measures__examType__examType"])].append(
+                {
+                    "timestamp": str(elt["timestamp"]),
+                    "pk": elt["pk"],
+                    "measures_value": elt["measures__value"],
+                    "measures_measuredQuantity": str(elt["measures__measuredQuantity"]),
+                }
             )
-            return JsonResponse(measures)
+        return JsonResponse(answerDic, safe=False)
     return JsonResponse({"error": "patient do not have measures"})
 
 
