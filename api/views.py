@@ -70,7 +70,7 @@ def get_food_idea(request):
 @csrf_exempt
 def create_user(request):
     if request.method == "POST":
-        answer = json.loads(request.body)
+        answer = json.loads(request.body.decode("utf-8"))
         if User.objects.filter(email=answer["email"]):
             return JsonResponse({"error": "email already in use"})
         user = User(
